@@ -18,7 +18,6 @@ from mujoco_playground._src import locomotion
 from mujoco_playground._src import manipulation
 from mujoco_playground._src import registry
 from mujoco_playground._src import wrapper
-from mujoco_playground._src import wrapper_torch
 # pylint: disable=g-importing-member
 from mujoco_playground._src.mjx_env import MjxEnv
 from mujoco_playground._src.mjx_env import render_array
@@ -26,6 +25,15 @@ from mujoco_playground._src.mjx_env import State
 from mujoco_playground._src.mjx_env import step
 
 # pylint: enable=g-importing-member
+
+
+def __getattr__(name):
+  if name == "wrapper_torch":
+    from mujoco_playground._src import wrapper_torch  # pylint: disable=g-import-not-at-top
+
+    return wrapper_torch
+  raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 __all__ = [
     "dm_control_suite",
