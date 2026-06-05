@@ -24,7 +24,10 @@ import warnings
 
 # Must be set before importing mujoco — the package reads this at import time
 # to preload the EGL backend. Setting it later has no effect.
-os.environ["MUJOCO_GL"] = "egl"
+# Default to CPU/software rendering for headless clusters without EGL. Override
+# with MUJOCO_GL=egl on machines where EGL is available.
+os.environ.setdefault("MUJOCO_GL", "osmesa")
+os.environ.setdefault("PYOPENGL_PLATFORM", os.environ["MUJOCO_GL"])
 
 # Force line-buffered stdout so print() output appears immediately in logs
 # even when running under nohup or redirected to a file.
