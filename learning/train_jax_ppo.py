@@ -16,6 +16,7 @@
 
 import datetime
 import functools
+import importlib.metadata
 import json
 import os
 import sys
@@ -70,7 +71,8 @@ os.environ.setdefault("NCCL_P2P_LEVEL", "SYS")
 os.environ.setdefault("NCCL_MIN_NCHANNELS", "8")
 os.environ.setdefault("NCCL_IB_DISABLE", "1")
 
-_XLA_AUTOTUNE_PATH = "/tmp/xla_autotune.pbtxt"
+_JAXLIB_VERSION = importlib.metadata.version("jaxlib").replace(".", "_")
+_XLA_AUTOTUNE_PATH = f"/tmp/xla_autotune_jaxlib_{_JAXLIB_VERSION}.pbtxt"
 _xla_flags_extra = [
     "--xla_gpu_enable_latency_hiding_scheduler=true",
     "--xla_gpu_shard_autotuning=false",
